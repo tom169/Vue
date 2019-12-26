@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div></div>
+    <h3></h3>
+    <script>
+        $(document).ready(function() {
+
+        });
+
+        var rex = {
+            name: 'rex',
+            writeName: function() {
+                return 'Name is ' + this.name;
+            },
+        };
+
+
+
+
+
+        console.log('rex.name:' + rex.name);
+        console.log('rex.writeName:' + rex.writeName);
+        console.log('rex.writeName():' + rex.writeName());
+        console.log('Object.keys(rex):' + Object.keys(rex));
+        rex.age = 18;
+        console.log(rex.age);
+        console.log('Object.keys(rex):' + Object.keys(rex));
+    </script>
+    <a href="https://ithelp.ithome.com.tw/articles/10197689">參考網址</a>
+
+</body>
+
+</html>

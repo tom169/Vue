@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 建議都要放key -->
+    <div id="formList">
+        <div v-for="list in lists">
+            {{titleText}}{{list.item}}：
+            <input type="text" v-bind:placeholder="list.item" v-bind:key="list.id">
+        </div>
+        <input type="button" value="反轉陣列" v-on:click="changeSort">
+        <input type="button" value="增加item" v-on:click="addLists">
+        <input type="button" value="刪除item" v-on:click="removeLists">
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        let listReverseData = {
+            titleText: '請輸入',
+            lists: [{
+                id: 'name',
+                item: '姓名'
+            }, {
+                id: 'mail',
+                item: '信箱'
+            }, {
+                id: 'tele',
+                item: '電話'
+            }],
+            itemAppend: ""
+        }
+
+
+        //反轉陣列與增刪item
+        let listMethods = {
+            changeSort: () => {
+                listReverseData.lists.reverse()
+            },
+            addLists: () => {
+                listReverseData.lists.push({
+                    id: 'age',
+                    item: '年齡',
+                })
+            },
+            removeLists: () => {
+                listReverseData.lists.splice(-1, 1);
+            }
+        }
+        let formList = new Vue({
+            el: '#formList',
+            data: listReverseData,
+            methods: listMethods,
+        })
+
+
+        //合併陣列
+        let arrNewList = [{
+            id: 'height',
+            item: '身高'
+        }, {
+            id: 'weight',
+            item: '體重'
+        }]
+        listReverseData.lists = listReverseData.lists.concat(arrNewList);
+
+
+
+        let testId = 'test';
+        //修改陣列
+        Vue.set(listReverseData.lists, 2, {
+            id: testId,
+            item: '測試'
+        });
+    </script>
+
+
+
+</body>
+
+</html>

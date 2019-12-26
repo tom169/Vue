@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="vueIfDiv" v-if="status">{{text}}</div>
+
+    <div id="vueIfElseDiv">
+        <span v-if="status=='A'">我是小明</span>
+        <span v-else-if="status=='B'">我是小花</span>
+        <span v-else="status">我是tomas</span>
+    </div>
+
+    <div id="vueTestDiv">
+        <input v-if="status" placeholder="輸入姓名">
+        <input v-else="status" placeholder="輸入email">
+        <input type="button" value="切換輸入" @click="changeStatus">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        let vueIfData = {
+            text: 'Hello World!',
+            status: true,
+        }
+        let vueIfDiv = new Vue({
+            el: '#vueIfDiv',
+            data: vueIfData,
+
+        })
+        let vueIfElseData = {
+            status: 'A',
+        }
+        let vueIfElseDiv = new Vue({
+            el: '#vueIfElseDiv',
+            data: vueIfElseData,
+        })
+        let vueTestData = {
+            status: true,
+        }
+        let vueTestMethods = {
+            changeStatus() {
+                // vueTestData.status ? vueTestData.status = false : vueTestData.status = true
+                if (vueTestData.status == true) {
+                    vueTestData.status = false;
+                } else {
+                    {
+                        vueTestData.status = true;
+                    }
+                }
+            }
+        }
+        let vueTestDiv = new Vue({
+            el: '#vueTestDiv',
+            data: vueTestData,
+            methods: vueTestMethods,
+        })
+    </script>
+
+
+</body>
+
+</html>

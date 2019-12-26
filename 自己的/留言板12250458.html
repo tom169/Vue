@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap 4 CSS 的 CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Microsoft JhengHei;
+        }
+        
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.42857;
+        }
+        
+        #custom-form-control {
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Vue實例的掛載點 -->
+    <div id='app'>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container text-center">
+                <h1 class="display-4">簡易記事本</h1>
+                <p class="lead">透過左側的新增，右側列清單及刪除功能來管理記事</p>
+            </div>
+        </div>
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <h3>新增記事</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">摘要</span>
+                                </div>
+                                <input type="text" class="form-control" v-model="newNote.name" placeholder="請填入記事摘要">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">內容</span>
+                                </div>
+                                <textarea type="text" class="form-control" id="custom-form-control" v-model="newNote.content" placeholder="請填入記事內容"></textarea>
+                            </div>
+                            <button class="btn btn-primary" @click='addNote'>新增</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 這裡是第二列 -->
+            <div class="row">
+                <div class="col">
+                    <h3 class="text-center"></h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th>名稱</th>
+                                <th>內容</th>
+                                <th colspan="2">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="note of notes">
+                                <td class="text-center">{{note.name}}</td>
+                                <td v-html="note.content">{{note.content}}</td>
+                                <td class="text-center">
+                                    <!-- 呼叫彈出視窗按鈕 -->
+                                    <button class="btn btn-danger btn-sm btn-circle" @click="selectNote(note)" data-toggle="modal" data-target="#deleteModal">
+                                    <i class="material-icons">
+                                    delete
+                                    </i></button>
+                                    <!-- 以下是彈出視窗 -->
+                                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel"><b>刪除留言</b> {{ noteSelected.name}}
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <b>是否真的要刪除？</b> <br><br>{{ noteSelected.content }}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">放棄</button>
+                                                    <button type="button" class="btn btn-primary" @click="deleteNote(noteSelected)">刪除</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 以上是彈出視窗 -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vue 的 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Bootstrap 4 JavaScript 的 CDN -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- Vue實例的程式碼 -->
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                noteSelected: {
+                    name: '',
+                    content: ''
+                },
+                newNote: {
+                    name: '',
+                    content: '',
+                },
+                notes: JSON.parse(localStorage.getItem('notes')) || []
+            },
+            watch: {
+                notes: {
+                    //監視到notes筆記增加陣列時，handler呼叫這個saveNotes方法做本地儲存動作
+                    handler: 'saveNotes',
+                    deep: true
+                }
+            },
+            methods: {
+                selectNote(note) {
+                    this.noteSelected.name = note.name;
+                    let noteContent_lineBreak_replace = note.content.replace(/<br>/g, '\n');
+                    this.noteSelected.content = noteContent_lineBreak_replace;
+                },
+                addNote() {
+                    if (this.newNote.name.trim().length == 0 || this.newNote.content.trim().length == 0) {
+                        alert('記事的摘要及內容都一定要填喔....');
+                        //return之後不會繼續執行後面此方法的code
+                        return
+                    }
+                    //轉換換行字符
+                    console.log('轉換前', this.newNote.content);
+                    let newNoteContent_lineBreak_replace = this.newNote.content.replace(/\n/g, '<br>');
+                    console.log('轉換過', newNoteContent_lineBreak_replace);
+                    //轉換後儲存
+                    const note = {
+                        name: this.newNote.name,
+                        content: newNoteContent_lineBreak_replace,
+                        created: new Date()
+                    }
+                    this.notes.push(note);
+                    //清除輸入框
+                    this.newNote.content = '';
+                    this.newNote.name = '';
+                },
+                deleteNote(note) {
+                    var found = false;
+                    for (var i = 0; i < this.notes.length; i++) {
+                        if (this.notes[i].name == note.name) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        this.notes.splice(i, 1);
+                    }
+                    $('#deleteModal').modal('hide');
+                },
+                saveNotes() {
+                    localStorage.setItem('notes', JSON.stringify(this.notes));
+                    console.log('新記事本已儲存', new Date());
+                    console.log('handler:', this.notes);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

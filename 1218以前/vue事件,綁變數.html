@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="firstVue">
+        {{content}}
+    </div>
+
+    <div id="timeDiv" v-bind:title="nowTime">
+        {{content}}
+    </div>
+
+
+    <div id="timeOnclickDiv" v-on:click="getTime">
+        {{content}}
+    </div>
+
+
+    <br>練習------------
+    <div id="test1Div"> {{content}}</div>
+    <div id="time1Div" v-bind:title="nowTime">
+        {{content}}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        //基本綁定 #firstVue
+        let firstVueObj = new Vue({
+            el: '#firstVue',
+            data: {
+                content: 'Hello!world!',
+            },
+        })
+        firstVueObj.content = 'changeText!';
+
+        //綁變數 #timeDiv
+        let timeData = {
+            content: '現在時間',
+            nowTime: '目前是' + String(new Date()),
+        }
+        let timeDiv = new Vue({
+                el: '#timeDiv',
+                data: timeData,
+            })
+            //事件 
+        let timeOnclickData = {
+            content: '點我看時間',
+        }
+        let timeOnclickDiv = new Vue({
+            el: '#timeOnclickDiv',
+            data: timeOnclickData,
+            methods: {
+                getTime: () => {
+                    console.log(String(new Date()))
+                },
+            },
+        })
+
+
+
+        //練習
+        let test1Div = new Vue({
+            el: '#test1Div',
+            data: {
+                content: '1234'
+            },
+        })
+        let text = '香蕉';
+        let testData = {
+            content: '我好想吃',
+            food: text,
+        }
+        console.log(testData.food);
+        test1Div.content = testData.content + testData.food;
+
+        let time1Data = {
+            content: '現在時間',
+            nowTime: '目前是' + String(new Date()),
+        }
+
+        let time1Div = new Vue({
+            el: '#time1Div',
+            data: time1Data,
+        })
+    </script>
+
+
+</body>
+
+</html>

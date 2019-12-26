@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="vueDiv">
+        <input type="text" v-model="myName">
+        <p>大家好!我叫{{myName}}</p>
+        <!-- <button type="button" value="">{{myName}}</button> -->
+    </div>
+
+
+
+
+    <div id="vueTestDiv">
+        <p>測試:{{myName}}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <script>
+        vueData = {
+            myName: "",
+        }
+        let vueDiv = new Vue({
+            el: "#vueDiv",
+            data: vueData,
+        })
+
+        let vueTestDiv = new Vue({
+            el: "#vueTestDiv",
+            data: vueData,
+        })
+    </script>
+
+</body>
+
+</html>

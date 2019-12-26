@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 注意list有無加上s -->
+    <div id="toDoList">
+        <div v-for="list in lists">{{list.item}}</div>
+    </div>
+    <!-- 可以加上index -->
+    <div id="toDoIndexList">
+        <div v-for="(list,index) in lists">
+            {{index}}.{{titleText}}-{{list.item}}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        let listData = {
+            lists: [{
+                item: '香蕉'
+            }, {
+                item: '芭樂'
+            }, {
+                item: '蘋果'
+            }]
+        }
+        let toDoList = new Vue({
+                el: '#toDoList',
+                data: listData,
+            })
+            //增加一個titleText屬性
+        let listIndexData = {
+            titleText: '想吃的水果',
+            lists: [{
+                item: '香蕉'
+            }, {
+                item: '芭樂'
+            }, {
+                item: '蘋果'
+            }]
+        }
+        let toDoIndexList = new Vue({
+            el: '#toDoIndexList',
+            data: listIndexData,
+        })
+    </script>
+
+
+</body>
+
+</html>

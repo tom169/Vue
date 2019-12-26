@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- 反轉陣列 -->
+    <div id="formList">
+        <div v-for="list in lists">
+            {{titleText}}{{list.item}}：
+            <input v-bind:placeholder="list.item">
+        </div>
+        <input type="button" value="反轉陣列" @click="changeSort">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        // 反轉陣列
+        let listReverseData = {
+            titleText: '請輸入',
+            lists: [{
+                item: '姓名'
+            }, {
+                item: '信箱'
+            }, {
+                item: '電話'
+            }]
+        }
+        let listMethods = {
+            changeSort: () => {
+                listReverseData.lists.reverse()
+            }
+        }
+        let formList = new Vue({
+            el: '#formList',
+            data: listReverseData,
+            methods: listMethods,
+        })
+    </script>
+
+
+</body>
+
+</html>
