@@ -42,7 +42,8 @@
         </div>
         <div class="container-fluid mt-4">
             <div class="row">
-                <div class="col">
+                <div class="col-2"></div>
+                <div class="col-8">
                     <div class="card text-center">
                         <div class="card-header">
                             <h3>新增記事</h3>
@@ -64,56 +65,64 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-2"></div>
             </div>
             <!-- 這裡是第二列 -->
 
 
 
-            <table class="table table-striped">
-
-                <thead>
-                    <tr class="text-center">
-                        <th>名稱</th>
-                        <th>內容</th>
-                        <th colspan="2">操作</th>
+            <table class="table table-striped" v-for="note of notes">
+                <!-- <thead>
+                    <tr class="row">
+                        <th class="col-3">名稱</th>
+                        <th class="col-8">內容</th>
+                        <th class="col-1 text-center">操作</th class="col-2">
                     </tr>
-                </thead>
+                </thead> -->
                 <tbody>
-                    <tr v-for="note of notes">
-                        <td class="text-center">{{note.name}}</td>
-                        <td v-html="note.content">{{note.content}}</td>
-                        <td class="text-center">
-                            <!-- 呼叫彈出視窗按鈕 -->
-                            <button class="btn btn-danger btn-sm btn-circle" @click="selectNote(note)" data-toggle="modal" data-target="#deleteModal">
+                    <tr class="row">
+                        <td class="col-2"></td>
+                        <td class="col-7">{{note.name}}</td>
+                        <td class="col-1 text-center"></td>
+                        <td class="col-2">{{note.created}}</td>
+                    </tr>
+                    <tr class="row">
+                        <td class="col-2"></td>
+                        <td class="col-7" v-html="note.content">{{note.content}}</td>
+                        <td class="col-1 text-center"> <button class="btn btn-danger btn-sm btn-circle" @click="selectNote(note)" data-toggle="modal" data-target="#deleteModal">
                             <i class="material-icons">
                             delete
-                            </i></button>
-                            <!-- 以下是彈出視窗 -->
-                            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel"><b>刪除留言</b> {{ noteSelected.name}}
-                                            </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <b>是否真的要刪除？</b> <br><br>{{ noteSelected.content }}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">放棄</button>
-                                            <button type="button" class="btn btn-primary" @click="deleteNote(noteSelected)">刪除</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- 以上是彈出視窗 -->
-                        </td>
+                            </i></button></td>
+                        <td class="col-2"></td>
                     </tr>
+                    <!-- 呼叫彈出視窗按鈕 -->
                 </tbody>
             </table>
+            <div class="text-center">
+                <!-- 以下是彈出視窗 -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" @keydown="delNoteByEnter($event, noteSelected)">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"><b>刪除留言</b> {{ noteSelected.name}}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                            </div>
+                            <div class="modal-body">
+                                <b>是否真的要刪除？</b> <br><br>{{ noteSelected.content }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">放棄</button>
+                                <button type="button" class="btn btn-primary" @click="deleteNote(noteSelected)">刪除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 以上是彈出視窗 -->
+            </div>
+
 
 
         </div>
@@ -164,13 +173,18 @@
                     console.log('轉換前', this.newNote.content);
                     let newNoteContent_lineBreak_replace = this.newNote.content.replace(/\n/g, '<br>');
                     console.log('轉換過', newNoteContent_lineBreak_replace);
-                    //轉換後儲存
+                    //建立日期做一下
+                    var d = new Date();
+                    let createdTime = d;
+                    //轉換後儲存到note物件
                     const note = {
                         name: this.newNote.name,
                         content: newNoteContent_lineBreak_replace,
-                        created: new Date()
+                        created: createdTime
                     }
-                    this.notes.push(note);
+                    console.log(this.notes.indexOf(note));
+                    //存進notes陣列中
+                    this.notes.unshift(note);
                     //清除輸入框
                     this.newNote.content = '';
                     this.newNote.name = '';
@@ -192,6 +206,13 @@
                     localStorage.setItem('notes', JSON.stringify(this.notes));
                     console.log('新記事本已儲存', new Date());
                     console.log('handler:', this.notes);
+
+                },
+                delNoteByEnter(e, note) {
+                    if (e.keyCode === 13) {
+                        console.log('Enter pressed')
+                        this.deleteNote(note)
+                    }
                 }
             }
         })

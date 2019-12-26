@@ -88,7 +88,7 @@
                                     delete
                                     </i></button>
                                     <!-- 以下是彈出視窗 -->
-                                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+                                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" @keydown="delNoteByEnter($event, noteSelected)">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -148,6 +148,12 @@
                 }
             },
             methods: {
+                delNoteByEnter(e, note) {
+                    if (e.keyCode === 13) {
+                        console.log('Enter pressed')
+                        this.deleteNote(note)
+                    }
+                },
                 selectNote(note) {
                     this.noteSelected.name = note.name;
                     let noteContent_lineBreak_replace = note.content.replace(/<br>/g, '\n');

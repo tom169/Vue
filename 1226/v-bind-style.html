@@ -11,7 +11,11 @@
 
     <!-- Fontawesom 的 CDN -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
+    <style>
+        body {
+            font-family: Microsoft JhengHei;
+        }
+    </style>
     <title>Document</title>
 </head>
 
@@ -21,20 +25,32 @@
         <div class="container-fluid mt-2">
             <div class="row">
                 <div class="alert alert-warning w-100 text-center" role="alert">
-                    <p :style='colorFontStyle'>顏色設定</p>
+                    <p :style='colorFontStyle.currentColor' :style='colorFontStyle.textDecorationStyle'>顏色設定</p:style='colorFontStyle.currentColor'>
                 </div>
             </div>
+
             <div class="row justify-content-center">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      請選擇
+                        請選擇顏色
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" v-for="color in colors" @click="selectColor(color)">{{color.title}}</a>
+                        <a class="dropdown-item" href="#" v-for='color in colors' @click='selectColor(color)'>
+                            {{ color.title }}</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        請選擇線的位置
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#" v-for='textDecoration in textDecorations' @click='selectTextDecoration(textDecoration)'>
+                            {{ textDecoration.title }}</a>
                     </div>
                 </div>
             </div>
-            <hr/> {{colorFontStyle.color}}
+
+            <hr /> {{ colorStyle.color }} -- {{ colorFontStyle.textDecorationStyle.textDecoration }}
         </div>
     </div>
     <!-- Vue 的 CDN -->
@@ -50,12 +66,29 @@
         new Vue({
             el: '#app',
             data: {
-                colorSelected: '',
-                colorFontStyle: {
-                    color: 'black',
-                    textDecoration: 'underline'
+                textDecorations: [{
+                    title: '頂線',
+                    name: 'overline'
+                }, {
+                    title: '中線',
+                    name: 'line-through'
+                }, {
+                    title: '底線',
+                    name: 'underline'
+                }],
+                colorStyle: {
+                    color: 'black'
                 },
-                currentColor: '',
+                colorFontStyle: {
+                    //只能綁定一組物件，懶得改了
+                    currentColor: {
+                        color: ''
+                    },
+                    textDecorationStyle: {
+                        textDecoration: ''
+                    },
+                },
+                currentTextDecoration: '',
                 colors: [{
                     id: '1',
                     title: '紅色',
@@ -63,23 +96,33 @@
                 }, {
                     id: '2',
                     title: '綠色',
-                    name: 'green',
+                    name: 'green'
                 }, {
                     id: '3',
                     title: '藍色',
-                    name: 'blue',
+                    name: 'blue'
                 }]
             },
             watch: {
-                currentColor: {
+                colorFontStyle: {
                     handler() {
-                        return this.currentColor = color.name;
+                        return this.colorStyle.color = this.colorFontStyle.currentColor.color
+                    },
+                    deep: true
+                },
+                currentTextDecoration: {
+                    handler() {
+                        return this.colorFontStyle.textDecorationStyle.textDecoration = this.currentTextDecoration
                     }
                 }
             },
             methods: {
                 selectColor(color) {
-                    this.colorSelected = color.name;
+                    this.colorFontStyle.currentColor.color = color.name
+                    console.log(this.colorFontStyle.currentColor);
+                },
+                selectTextDecoration(textDecoration) {
+                    this.currentTextDecoration = textDecoration.name
                 }
             }
         })
