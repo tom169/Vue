@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        body {
+            font-family: Microsoft JhengHei;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Vue實例的掛載點 -->
+    <div id='app'>
+        <!-- 沒有綁定真實事件，get-item只是隨機取名的事件器，需要被呼叫才會使用方法 -->
+        <todo @get-item='addItem'></todo>
+        <ul>
+            <li v-for='todo in todos'>{{todo}}</li>
+        </ul>
+    </div>
+
+
+
+
+
+    <!-- 先在模板上寫一個具有輸入按鈕的 -->
+    <template id='todoUI'>
+<div>
+    <label>代辦事項</label>
+    <input type="text" v-on:keyup.enter.esc='newItem($event)'>
+</div>
+    </template>
+
+
+
+
+    <!-- Vue 的 CDN -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <!-- Vue實例的程式碼 -->
+    <script>
+        Vue.component('todo', {
+            methods: {
+                newItem($event) {
+                    this.$emit("get-item", $event.target.value)
+                    $event.target.value = ''
+                }
+            },
+            template: '#todoUI'
+        })
+
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    todos: []
+                }
+            },
+            methods: {
+                addItem(value) {
+                    this.todos.push(value)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

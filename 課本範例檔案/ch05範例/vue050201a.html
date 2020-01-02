@@ -26,15 +26,15 @@
     <script>
         Vue.component('hello', {
             props: ['named'],
-            data(){
+            data() {
                 return {
-                    name:'親愛的 ' + this.named
+                    name: '親愛的 ' + this.named
                 }
             },
             template: '<p>歡迎 {{ name }} 來到  Vue.js  前端設計實戰營！</p>'
         })
         new Vue({
-            el: '#app'
+            el: '#app',
         })
     </script>
 </body>

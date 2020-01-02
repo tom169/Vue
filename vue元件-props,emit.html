@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
     <style>
         body {
             font-family: Microsoft JhengHei;
@@ -15,10 +14,29 @@
 </head>
 
 <body>
+
+
     <!-- Vue實例的掛載點 -->
-    <div id='app'>
-        <hello named="John"></hello>
+    <div id='app' class="container mt-3">
+        <input type="text" v-model:value='name'>
+        <button @click='showHello=true'>打招呼</button>
+        <hello v-show='showHello' :named='name' @close='showHello=false'>
+        </hello>
     </div>
+
+
+
+
+    <!-- template -->
+    <template id='helloUI'>   
+<div>
+    <p>歡迎{{named}} 來到 Vue.js 前端設計!</p>
+    <button @click='$emit("close")'>關閉</button>
+</div>
+
+</template>
+
+
     <!-- Vue 的 CDN -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
 
@@ -26,11 +44,16 @@
     <script>
         Vue.component('hello', {
             props: ['named'],
-            template: '<p>歡迎{{named}}來到 Vue.js 前端設計實戰營！</p>'
-
+            template: '#helloUI'
         })
         new Vue({
-            el: '#app'
+            el: '#app',
+            data() {
+                return {
+                    name: '',
+                    showHello: false
+                }
+            }
         })
     </script>
 </body>
