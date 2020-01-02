@@ -17,16 +17,15 @@
 <body>
     <!-- Vue實例的掛載點 -->
     <div id='app'>
-        <input type="text" v-model='message'>
-        <button @click='send'>送出</button>
-        <to-do-list :listsprops='lists'></to-do-list>
+        count:{{count}}
+        <button-click @increase='add'></button-click>
     </div>
 
 
 
 
 
-
+    <!-- 菜菜菜的 Vue 30天 - Day18 -->
 
     <!-- Vue 的 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -39,42 +38,31 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- Vue實例的程式碼 -->
     <script>
-        //所謂的子層
-        Vue.component('to-do-list', {
-                props: ['listsprops'],
-                methods: {
-                    listRemove(index, value) {
-                        this.listsprops.splice(index, 1);
+        Vue.component('button-click', {
+            data() {
+                return {
+                    counted: 0
+                }
+            },
+            methods: {
+                increase() {
+                    this.$emit('increase', this.counted++);
+                }
+            },
+            template: `<a><button @click=increase>+1</button></a>`
 
-                        //另一種刪除方式
-                        // for (let i = 0; i < this.listsprops.length; i++) {
-                        //     if (this.listsprops.indexOf(this.listsprops[i]) == index) {
-                        //         this.listsprops.splice(i, 1);
-                        //     }
+        })
 
-                        // }
-                    }
-                },
-                template: `    <ul>
-        <li v-for='(list,index) in listsprops'>
-            {{list}} <button @click='listRemove(index,list)'>remove</button>
-        </li>
-      
-    </ul>
-`
-            })
-            //所謂的父層
         new Vue({
             el: '#app',
             data() {
                 return {
-                    message: '',
-                    lists: []
+                    count: ''
                 }
             },
             methods: {
-                send() {
-                    this.lists.push(this.message);
+                add(counted) {
+                    this.count = counted;
                 }
             }
         })
