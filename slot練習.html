@@ -13,37 +13,20 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
     <title>Document</title>
+
+    <style>
+        body {
+            font-family: Microsoft JhengHei;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Vue實例的掛載點 -->
     <div id='app'>
-        <div class="container">
-            <div class="alert alert-info mt-2" role="alert">
-                <div class="row">
-                    <div class="input-group mb-3">
-                        <input type="text" v-model:value='name' class="form-control" placeholder="請輸入您的姓名" aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                            <button @click='showHello=true' class="btn btn-outline-secondary" type="button" id="button-addon2"><i
-                                    class="far fa-grin-beam"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <hello v-show='showHello' v-bind:named="name" @close='showHello=false' class="mx-auto"></hello>
-                </div>
-            </div>
-        </div>
+        <button-add-count> +1 </button-add-count>
     </div>
 
-    <template id='helloUI'>
-        <div class="text-center">
-            <div class="alert alert-info" role="alert">
-                <p>歡迎 {{ named }} 來到 Vue.js 前端設計！</p>
-                <button type="button" class="btn btn-info" @click='$emit("close")'>關閉</button>
-            </div>
-        </div>
-    </template>
     <!-- Vue 的 CDN -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
 
@@ -54,18 +37,12 @@
 
     <!-- Vue實例的程式碼 -->
     <script>
-        Vue.component('hello', {
-            props: {
-                named: String
-            },
-            template: '#helloUI'
+        Vue.component('button-add-count', {
+            template: `<button><slot>確定</slot></button>`
         })
+
         new Vue({
-            el: '#app',
-            data: {
-                name: '',
-                showHello: false
-            }
+            el: '#app'
         })
     </script>
 </body>

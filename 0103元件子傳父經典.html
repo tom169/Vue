@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- bootstrap的cdn -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Fontawesom 的 CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!-- google的icon的cdn -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Vue實例的掛載點 -->
+    <div id="app">
+        <!-- 元件 -->
+        <!-- ※※@listadd='add' 的listadd就是傳遞到父層的KEY 必須小寫 -->
+        <to-do-list @listadd='add'></to-do-list>
+        <!-- 元件 -->
+
+        <!-- 備註:神奇的是如果html放置兩個元件，共用的new Vue竟然是分開計算lists這筆資料而不會通用 -->
+
+
+    </div>
+
+
+
+
+
+
+    <!-- Vue 的 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- bootstrap的javascript的cdn -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- Axios 的 CDN -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Vue實例的程式碼 -->
+    <script>
+        ///////////////// 元件設定
+        Vue.component('to-do-list', {
+                data() {
+                    return {
+                        listData: '',
+                        lists: []
+                    }
+                },
+                methods: {
+                    Listadd() {
+                        this.lists.push(this.listData);
+                        //傳送this.lists這筆在元件的資料到listadd，就是設在元件名稱to-do-list的@listadd
+                        this.$emit('listadd', this.lists);
+                    },
+                    Remove(index) {
+                        this.lists.splice(index, 1);
+                    }
+                },
+                template: `     
+            <div>
+        <input type="text" v-model='listData'>
+        <button  @click='Listadd'>Listadd</button>
+        <ul>
+            <li v-for='(list,index) in lists'>{{list}} <button @click='Remove(index)'>remove</button></li>
+        </ul>
+    </div>
+`
+            })
+            ////////////////// 元件設定
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    lists: []
+                }
+            },
+            methods: {
+                add(lists) {
+                    //※※感應用，只要@listadd感應到資料，就會自動接收
+                    this.lists = lists;
+                    console.log(`new Vue lists`, this.lists)
+                },
+            }
+
+        })
+    </script>
+</body>
+
+</html>

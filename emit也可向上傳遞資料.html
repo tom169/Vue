@@ -16,16 +16,19 @@
 
 <body>
     <!-- Vue實例的掛載點 -->
-    <div id='app'>
-        count:{{count}}
-        <button-click @increase='add'></button-click>
+    <div id="app">
+        <input type="text" v-model='name'>
+        <!-- 沒錯 可以直接在事件上做事 如@click=showHello=true -->
+        <button @click='showHello=true'>say</button>
+        <hello :named='name' v-show='showHello' @close='showHello=false'></hello>
     </div>
 
 
+    <template id="tp">
+<div >歡迎{{name}}來到vue實戰營! <button @click='$emit("close")'>關閉</button>  <button @click='status'>status</button></div>
+</template>
 
 
-
-    <!-- 菜菜菜的 Vue 30天 - Day18 -->
 
     <!-- Vue 的 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -38,32 +41,45 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!-- Vue實例的程式碼 -->
     <script>
-        Vue.component('button-click', {
+        Vue.component('hello', {
+            props: {
+                named: String
+            },
             data() {
                 return {
-                    counted: 0
+                    name: '',
+                    close: 'showHello: false'
+                }
+            },
+            watch: {
+                named: {
+                    handler() {
+                        this.name = this.named;
+                    },
+
                 }
             },
             methods: {
-                increase() {
-                    this.$emit('increase', this.counted++);
+                status() {
+                    console.log('this.named', this.named)
+                    console.log('this.name', this.name)
+                    console.log('typeOf', typeof(this.named))
                 }
             },
-            template: `<a><button @click=increase>+1</button></a>`
-
+            template: '#tp'
         })
+
 
         new Vue({
             el: '#app',
             data() {
                 return {
-                    count: ''
+                    name: '',
+                    showHello: false
                 }
             },
             methods: {
-                add(counted) {
-                    this.count = counted;
-                }
+
             }
         })
     </script>

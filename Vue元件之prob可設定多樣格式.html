@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
     <title>Document</title>
+
+    <style>
+        body {
+            font-family: Microsoft JhengHei;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,6 +37,9 @@
                 </div>
                 <div class="row">
                     <hello v-show='showHello' v-bind:named="name" @close='showHello=false' class="mx-auto"></hello>
+                </div>
+                <div class="row">
+                    <hello v-show='showHello' @close='showHello=false' class="mx-auto"></hello>
                 </div>
             </div>
         </div>
@@ -56,7 +65,15 @@
     <script>
         Vue.component('hello', {
             props: {
-                named: String
+                named: {
+                    type: String,
+                    default: '親愛的讀者',
+                    required: true,
+                    validator(value) {
+                        console.log('props validator...')
+                        return true
+                    }
+                }
             },
             template: '#helloUI'
         })
