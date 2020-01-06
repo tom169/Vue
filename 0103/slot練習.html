@@ -24,8 +24,16 @@
 <body>
     <!-- Vue實例的掛載點 -->
     <div id='app'>
-        <button-add-count> +1 </button-add-count>
+        <b-menu>
+            <b-menu-item>menu 1</b-menu-item>
+            <b-menu-item>menu 2</b-menu-item>
+            <b-menu-item>menu 3</b-menu-item>
+            <b-menu-item>menu 4</b-menu-item>
+        </b-menu>
     </div>
+
+
+
 
     <!-- Vue 的 CDN -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -37,8 +45,11 @@
 
     <!-- Vue實例的程式碼 -->
     <script>
-        Vue.component('button-add-count', {
-            template: `<button><slot>確定</slot></button>`
+        Vue.component('b-menu', {
+            template: `<div><ul><slot></slot></ul></div>`
+        })
+        Vue.component('b-menu-item', {
+            template: `<li><slot></slot></li>`
         })
 
         new Vue({

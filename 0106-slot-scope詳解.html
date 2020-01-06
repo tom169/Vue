@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id='app'>
+        <base-title title="child content">
+            <template slot-scope="{ childtitle }">
+          <div>content: {{content}}</div>
+          <!-- 如果要使用設在父組件的子組件資料{{childtitle}}，就必須使用v-bind綁定傳導
+            然後在父組件使用資料區塊外在包裹一層template設定slot-scopte，因為父組件下的資料只能由父組件定義 -->
+          <div>title: {{childtitle}}</div>
+        </template>
+        </base-title>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+
+    <script>
+        Vue.component('base-title', {
+            props: ['title'],
+            template: `
+            <div>
+  <h2>{{title}}</h2>
+  <slot :childtitle="title"></slot>
+</div>
+  `
+        });
+
+        new Vue({
+            el: '#app',
+            data: {
+                content: 'parent contecnt'
+            }
+        })
+    </script>
+
+
+</body>
+
+</html>

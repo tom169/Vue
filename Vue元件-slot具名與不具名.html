@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <!-- <link href="css/style.css" type="text/css" rel="stylesheet" media="all"> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+
+
+    <template id="tpFather">
+        <div class="father"> 
+            <h3>這裡是父組件</h3> 
+            <child> 
+                <!-- child元件所包覆的資料都會在child元件設定的slot裡面
+                slot外面顯示的寫的任何資料都會直接顯示
+                但是slot裡面要放東西的話 如果child元件沒有包覆任何資料
+                則顯示slot放的資料 -->
+                <!-- slot內容 -->
+<!-- 具名的slot -->
+                <div slot='one'> 
+                <span>菜單1</span>
+                 <span>菜單2</span>
+                  <span>菜單3</span> 
+                  <span>菜單4</span> 
+                  <span>菜單5</span> 
+                  <span>菜單6</span>
+                 </div> 
+ <!-- 具名的slot -->
+                 <div slot='two'> 
+               <span>菜單7</span>
+               <span>菜單8</span>
+                <span>菜單9</span> 
+                <span>菜單10</span> 
+                <span>菜單11</span> 
+                <span>菜單12</span>
+                 </div> 
+<!-- 不具名的 -->
+                 <div > 
+                <span>菜單13</span>
+                <span>菜單14</span>
+                <span>菜單15</span> 
+                 <span>菜單16</span> 
+                 <span>菜單17</span> 
+                 <span>菜單18</span>
+                 </div> 
+                <!-- slot內容 -->
+            </child> 
+        </div>
+</template>
+
+    <template id='tpChild'>
+    <div class="child">
+        <h3>這裡是子組件</h3>
+<!-- 具名的 -->
+        <slot name='one'>
+        </slot>
+<!-- 具名的 -->
+        <slot name='two'>
+        </slot>
+<!-- 不具名的 -->
+        <slot >
+        </slot>
+    </div>
+</template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+
+    <script>
+        Vue.component('child', {
+            template: '#tpChild'
+        })
+
+        new Vue({
+            el: '#app',
+            template: '#tpFather'
+        })
+    </script>
+
+
+</body>
+
+</html>

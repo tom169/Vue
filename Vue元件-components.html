@@ -67,13 +67,6 @@
 
     <!-- Vue實例的程式碼 -->
     <script>
-        const goodbye = {
-            props: {
-                named: String
-            },
-            template: `<p>{{named}}，再見，期待您很快就再回到Vue.js前端設計！</p>`
-        }
-
         Vue.component('hello', {
             props: {
                 named: String
@@ -81,6 +74,16 @@
             template: `<p>歡迎{{named}}來到Vue.js前端設計！</p>`
         })
 
+
+        const goodbye = {
+            props: {
+                named: String
+            },
+            template: `<p>{{named}}，再見，期待您很快就再回到Vue.js前端設計！</p>`
+        }
+
+
+        //components裡放物件的話，is那邊可以直接套上?
         new Vue({
             el: '#app',
             data: {
