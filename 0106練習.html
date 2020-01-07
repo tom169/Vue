@@ -22,8 +22,8 @@
 <body>
     <!-- Vue實例的掛載點 -->
     <div id='app'>
-        <a href="" @click='status=one'>狀態一</a>
-        <a href="">狀態二</a>
+        <a href="" @click='status="one"'>狀態一</a>
+        <a href="" @click='status="two"'>狀態二</a>
 
         <component :is='status'></component>
     </div>
@@ -38,7 +38,13 @@
 
     <!-- Vue實例的程式碼 -->
     <script>
-        Vue.component('', )
+        const two = {
+            template: `<p>template:狀態二</p>`
+        }
+
+        Vue.component('one', {
+            template: `<p>template:狀態一</p>`
+        })
 
         new Vue({
             el: '#app',
@@ -46,6 +52,9 @@
                 return {
                     status: 'one'
                 }
+            },
+            components: {
+                two
             }
         })
     </script>
