@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- bootstrap的cdn -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Fontawesom 的 CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!-- google的icon的cdn -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Vue實例的掛載點 -->
+
+    <div id="app">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">待辦事項</span>
+            </div>
+            <input type="text" class="form-control" placeholder="準備要做的任務" v-model='newTodo' @keyup.enter="addTodo">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" @click="addTodo">新增</button>
+            </div>
+        </div>
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{'active':visibility == 'all'}" @click.prevent="visibility='all'" href="#">全部</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " :class="{'active':visibility == 'active'}" @click.prevent="visibility='active'" href="#">進行中</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{'active':visibility == 'completed'}" @click.prevent="visibility='completed'" href="#">已完成</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="list-group list-group-flush text-left">
+                <li class="list-group-item" v-for="(todo,index) in filterTodos" @dblclick="ediTodo(todo)">
+                    <div class="d-flex" v-if="todo.id != cacheTodo.id">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" v-model="todo.completed" :id="todo.id">
+                            <label class="form-check-label" :class="{'completed':todo.completed}" :for="todo.id">  
+{{todo.content}}
+
+</label>
+                        </div>
+                        <button type="button" class="close ml-auto" aria-label="Close" @click='deleteTodo(index)'>
+<span aria-hidden="true" >&times;</span>
+</button>
+                    </div>
+                    <input type="text" class="form-control" v-if="todo.id == cacheTodo.id" v-model="cacheContent" @keyup.esc="cancelEdiT" @keyup.enter="edited(todo)">
+                </li>
+
+
+                <!-- <li class="list-group-item">
+                    <input type="text" class="form-control">
+                </li> -->
+            </ul>
+
+            <div class="card-footer d-flex justify-content-between">
+                <span>還有 3 筆任務未完成</span>
+                <a href="#">清除所有任務</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Vue 的 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- bootstrap的javascript的cdn -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <!-- Axios 的 CDN -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Vue實例的程式碼 -->
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                newTodo: '',
+                todos: [],
+                visibility: 'all',
+                cacheTodo: {},
+                cacheContent: ''
+            },
+            methods: {
+                addTodo() {
+                    if (this.newTodo.trim().length == 0) {
+                        alert('輸入的任務不可為空')
+                        this.newTodo = '';
+                        return
+                    }
+                    let timestamp = Math.floor(Date.now())
+                    console.log(timestamp);
+                    const todo = {
+                        id: timestamp,
+                        content: this.newTodo,
+                        completed: false
+                    }
+                    this.todos.push(todo);
+                    this.newTodo = '';
+
+                },
+                deleteTodo(index) {
+                    this.todos.splice(index, 1);
+
+                },
+                ediTodo(todo) {
+                    console.log('ediTodo');
+                    this.cacheTodo = todo;
+                    this.cacheContent = todo.content;
+                },
+                cancelEdiT() {
+                    this.cacheTodo = {};
+                },
+                edited(todo) {
+                    todo.content = this.cacheContent;
+                    this.cacheContent = '';
+                    this.cacheTodo = {};
+                }
+            },
+            computed: {
+                filterTodos() {
+                    if (this.visibility == 'all') {
+                        return this.todos;
+                    } else if (this.visibility == 'active') {
+                        let todosFiltered = []
+
+                        for (let i = 0; i < this.todos.length; i++) {
+                            if (!this.todos[i].completed) {
+                                todosFiltered.push(this.todos[i]);
+                            }
+                        }
+                        return todosFiltered;
+                    } else if (this.visibility == 'completed') {
+                        let todosFiltered = []
+                        for (let i = 0; i < this.todos.length; i++) {
+                            if (this.todos[i].completed) {
+                                todosFiltered.push(this.todos[i]);
+                            }
+                        }
+                        return todosFiltered;
+                    }
+                }
+            }
+        });
+    </script>
+
+    <style>
+        .completed {
+            text-decoration: line-through
+        }
+    </style>
+</body>
+
+</html>
